@@ -12,7 +12,7 @@ The app is mainly done for my personal use, but I thought it would be nice to sh
 
 ## 📷 Screenshots
 
-![Screenshot](https://raw.githubusercontent.com/divin/text2speech/main/assets/screenshot.png)
+![Screenshot](assets/screenshot.png)
 
 ## 🏗️ Installation
 
