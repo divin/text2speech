@@ -1,0 +1,4 @@
+generated_audio/
+voices/*/
+TTS/
+.DS_Store
