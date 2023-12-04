@@ -1,7 +1,6 @@
 # 🗣️ Text2Speech - A simple text to speech app using Python
 
-This is a simple text to speech app written in Python. It uses [TTS](https://github.com/coqui-ai/TTS) to generate speech from text. To build the web app, I used [Gradio](https://www.gradio.app).
-The app is mainly done for my personal use, but I thought it would be nice to share it with others.
+This is a simple text to speech app written in Python. It uses [TTS](https://github.com/coqui-ai/TTS) to generate speech from text. To build the web app, I used [Gradio](https://www.gradio.app). The app is mainly done for my personal use, but I thought it would be nice to share it with others.
 
 ## 📝 Features
 
@@ -17,11 +16,12 @@ The app is mainly done for my personal use, but I thought it would be nice to sh
 ## 🏗️ Installation
 
 1. Clone this repository
-2. Create a new Python 3.11 virtual environment in your preferred way
-3. Install the requirements: `pip install -r requirements.txt`
-4. Run the installation script: `bash install.sh`
+2. Move to the cloned repository: `cd text2speech`
+3. Create a new Python 3.11 virtual environment in your preferred way and activate it
+4. Install the requirements: `pip install -r requirements.txt`
+5. Run the installation script: `bash install.sh`
    - This will clone the TTS repository and install the requirements.
-5. Run the app: `python app.py`
+6. Run the app: `python app.py`
 
 ## 📚 Notes
 

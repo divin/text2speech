@@ -4,6 +4,8 @@ import torch
 import gradio as gr
 from TTS.api import TTS
 
+APP_NAME = "Text2Speech"
+
 LANGUAGE_CODE = {
     "en": "English",
     "es": "Spanish",
@@ -65,13 +67,13 @@ def get_app() -> gr.Interface:
     text2speech = TTS("tts_models/multilingual/multi-dataset/xtts_v2").to(device)
 
     # Create the app
-    with gr.Blocks(title="Text2Speech") as app:
+    with gr.Blocks(title=APP_NAME) as app:
 
-        gr.Markdown("# Text2Speech")
+        gr.Markdown(f"# {APP_NAME}")
 
         with gr.Accordion("About", open=False):
-            gr.Markdown("""
-            # Text2Speech
+            gr.Markdown(f"""
+            # {APP_NAME}
             This app uses [TTS](https://github.com/coqui-ai/TTS) to generate speech from text.
             
             ## How to use it?
@@ -88,7 +90,7 @@ def get_app() -> gr.Interface:
 
         # Text which will be converted to speech
         with gr.Group():
-            prompt = gr.TextArea(label="Enter Prompt")
+            prompt = gr.TextArea(label="Enter the Text")
             language = gr.Dropdown(value="English", choices=LANGUAGE_MAPPING.keys(), label="Select Language")
 
         # Select a folder with voices
@@ -105,7 +107,7 @@ def get_app() -> gr.Interface:
                 button = gr.Button("Generate Audio")
             
             with gr.Column():
-               generated_audio_preview = gr.Audio(label="Generated Audio Preview")
+               generated_audio_preview = gr.Audio(label="Preview of Generated Speech")
         
         button.click(fn=_generate_audio, inputs=[prompt, voices_folder, file_name, language], outputs=[generated_audio_preview])
     
