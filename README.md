@@ -7,7 +7,7 @@ This is a simple text to speech app written in Python. It uses [TTS](https://git
 - Generate speech from text in 16 languages
 - Save the generated speech as a WAV file
 - Use any recoreded voice as the speaker and convert it to speech in any language
-- Very fast interference even on CPU (tested on Apple M1)
+- Very fast interference even on CPU (tested on Apple M1, MPS is not supported yet)
 
 ## 📷 Screenshots
 
