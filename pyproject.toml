@@ -9,6 +9,7 @@ line-length = 100
 exclude = [
     ".git/",
     "__pycache__/",
+    "TTS/"
 ]
 
 extend-ignore = [

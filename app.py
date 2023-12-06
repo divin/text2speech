@@ -1,7 +1,9 @@
-import os
 import glob
-import torch
+import os
+
 import gradio as gr
+import torch
+
 from TTS.api import TTS
 
 APP_NAME = "Text2Speech"
@@ -22,13 +24,13 @@ LANGUAGE_CODE = {
     "zh-cn": "Chinese",
     "ja": "Japanese",
     "hu": "Hungarian",
-    "ko": "Korean"
+    "ko": "Korean",
 }
 
 LANGUAGE_MAPPING = {value: key for key, value in LANGUAGE_CODE.items()}
 
-def get_app() -> gr.Interface:
 
+def get_app() -> gr.Interface:
     def _get_fixed_file_name(file_name: str) -> str:
         """Fix the file name to avoid errors"""
         file_name = file_name.replace(" ", "_")
@@ -43,14 +45,16 @@ def get_app() -> gr.Interface:
         file_path = f"generated_audio/{file_name}.wav"
         file_name = _get_fixed_file_name(file_name=file_name)
         language = LANGUAGE_MAPPING[language]
-        text2speech.tts_to_file(prompt, speaker_wav=speaker_wav, language=language, file_path=file_path)
+        text2speech.tts_to_file(
+            prompt, speaker_wav=speaker_wav, language=language, file_path=file_path
+        )
         return file_path
-    
+
     def _get_voices_preview(voices_folder):
         """Get the first voice in the folder"""
         files = glob.glob(voices_folder + "/*.wav") + glob.glob(voices_folder + "/*.mp3")
         return files[0]
-    
+
     def _get_available_voices() -> list[str]:
         """Get the available voices"""
         return glob.glob("voices/*")
@@ -68,14 +72,14 @@ def get_app() -> gr.Interface:
 
     # Create the app
     with gr.Blocks(title=APP_NAME) as app:
-
         gr.Markdown(f"# {APP_NAME}")
 
         with gr.Accordion("About", open=False):
-            gr.Markdown(f"""
+            gr.Markdown(
+                f"""
             # {APP_NAME}
             This app uses [TTS](https://github.com/coqui-ai/TTS) to generate speech from text.
-            
+
             ## How to use it?
             1. Write the text you want to convert to speech.
             2. Select the language of the text.
@@ -86,35 +90,45 @@ def get_app() -> gr.Interface:
                 - The file will be saved as a `.wav` file in the `generated_audio` folder.
             5. Click on `Generate Audio` to generate the audio.
                 - You can listen to the generated audio in the `Generated Audio Preview`.
-            """)
+            """
+            )
 
         # Text which will be converted to speech
         with gr.Group():
             prompt = gr.TextArea(label="Enter the Text")
-            language = gr.Dropdown(value="English", choices=LANGUAGE_MAPPING.keys(), label="Select Language")
+            language = gr.Dropdown(
+                value="English", choices=LANGUAGE_MAPPING.keys(), label="Select Language"
+            )
 
         # Select a folder with voices
         with gr.Row():
-            voices_folder = gr.Dropdown(choices=_get_available_voices(), label="Select a Folder with Voices")
+            voices_folder = gr.Dropdown(
+                choices=_get_available_voices(), label="Select a Folder with Voices"
+            )
             voices_preview = gr.Audio(label="Preview of Selected Voices")
-            voices_folder.input(fn=_get_voices_preview, inputs=[voices_folder], outputs=[voices_preview])
+            voices_folder.input(
+                fn=_get_voices_preview, inputs=[voices_folder], outputs=[voices_preview]
+            )
 
         # Generate audio from text
         with gr.Row():
-
             with gr.Group():
                 file_name = gr.Textbox(label="Enter a File Name")
                 button = gr.Button("Generate Audio")
-            
+
             with gr.Column():
-               generated_audio_preview = gr.Audio(label="Preview of Generated Speech")
-        
-        button.click(fn=_generate_audio, inputs=[prompt, voices_folder, file_name, language], outputs=[generated_audio_preview])
-    
+                generated_audio_preview = gr.Audio(label="Preview of Generated Speech")
+
+        button.click(
+            fn=_generate_audio,
+            inputs=[prompt, voices_folder, file_name, language],
+            outputs=[generated_audio_preview],
+        )
+
     return app
 
-if __name__ == "__main__":
 
+if __name__ == "__main__":
     # Create folder for generated audio
     if not os.path.exists("generated_audio"):
         os.mkdir("generated_audio")
