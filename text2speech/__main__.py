@@ -41,6 +41,16 @@ def get_app() -> gr.Interface:
 
     def _generate_audio(prompt: str, voices_folder: str, file_name: str, language: str):
         """Generate audio from text using the selected voices folder"""
+
+        if file_name == "":
+            raise ValueError("Please enter a file name!")
+
+        if voices_folder == "" or not os.path.exists(voices_folder):
+            raise ValueError("Please select a folder with voices!")
+
+        if prompt == "":
+            raise ValueError("Please enter the text to convert to speech!")
+
         speaker_wav = glob.glob(voices_folder + "/*.wav") + glob.glob(voices_folder + "/*.mp3")
         file_path = f"generated_audio/{file_name}.wav"
         file_name = _get_fixed_file_name(file_name=file_name)

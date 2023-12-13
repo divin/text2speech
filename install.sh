@@ -8,3 +8,9 @@ cd TTS
 
 # Run pip install
 pip install -e .[all]
+
+# Go back to the root directory
+cd ..
+
+# Install app
+pip install -e .[development]
