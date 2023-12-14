@@ -3,7 +3,7 @@ from setuptools import setup
 
 if __name__ == "__main__":
     name = "text2speech"
-    version = "0.1.0"
+    version = "1.0.0"
     python_requires = ">=3.10,<3.11"
     description = "A simple text to speech app written in Python."
     packages = find_packages(include=["text2speech", "text2speech.*"])

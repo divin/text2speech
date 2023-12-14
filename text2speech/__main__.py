@@ -1,12 +1,12 @@
 import glob
 import os
 
-import gradio as gr
+import gradio as gr  # type: ignore
 import torch
 
-from TTS.api import TTS
+from TTS.api import TTS  # type: ignore
 
-APP_NAME = "Text2Speech"
+from .constants import DESCRIPTION
 
 LANGUAGE_CODE = {
     "en": "English",
@@ -60,7 +60,7 @@ def get_app() -> gr.Interface:
         )
         return file_path
 
-    def _get_voices_preview(voices_folder):
+    def _get_voices_preview(voices_folder: str) -> str:
         """Get the first voice in the folder"""
         files = glob.glob(voices_folder + "/*.wav") + glob.glob(voices_folder + "/*.mp3")
         return files[0]
@@ -81,27 +81,11 @@ def get_app() -> gr.Interface:
     text2speech = TTS("tts_models/multilingual/multi-dataset/xtts_v2").to(device)
 
     # Create the app
-    with gr.Blocks(title=APP_NAME) as app:
-        gr.Markdown(f"# {APP_NAME}")
+    with gr.Blocks(title="🗣️ Text2Speech") as app:
+        gr.Markdown("# 🗣️ Text2Speech")
 
         with gr.Accordion("About", open=False):
-            gr.Markdown(
-                f"""
-            # {APP_NAME}
-            This app uses [TTS](https://github.com/coqui-ai/TTS) to generate speech from text.
-
-            ## How to use it?
-            1. Write the text you want to convert to speech.
-            2. Select the language of the text.
-            3. Select a folder with voices.
-                - You can listen to the voices in the respective folder in the `Voices Preview` section.
-                - You can add your own voices in the `voices` folder.
-            4. Write a file name for the generated audio without the extension.
-                - The file will be saved as a `.wav` file in the `generated_audio` folder.
-            5. Click on `Generate Audio` to generate the audio.
-                - You can listen to the generated audio in the `Generated Audio Preview`.
-            """
-            )
+            gr.Markdown(DESCRIPTION)
 
         # Text which will be converted to speech
         with gr.Group():

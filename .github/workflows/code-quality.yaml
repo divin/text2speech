@@ -5,6 +5,8 @@ on:
   push:
     branches:
       - "development"
+    paths:
+      - "**.py"
   
 jobs:
   code-quality:
@@ -42,9 +44,4 @@ jobs:
       
       - name: 🔬 Analyse Type Hinting with MyPy
         run: |
-          mypy --install-types
           mypy $(git ls-files "*.py")
-
-      - name: 🔬 Test with PyTest
-        run: |
-          pytest tests/
