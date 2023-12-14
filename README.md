@@ -45,4 +45,7 @@ Get Text2Speech up and running on your local machine in no time:
 ## 📚 Additional Notes
 
 - You need to provide a `voices` folder, which should contain subfolders with the recorded voices in `.wav` or `.mp3` format. If you don't have any recorded voices, you can use [the voices folder](https://github.com/neonbjb/tortoise-tts/tree/main/tortoise/voices) from [Tortoise](https://github.com/neonbjb/tortoise-tts), another excellent TTS Python library.
-- The app will save the generated speech in the `generated_audio` folder.****
+- The app will save the generated speech in the `generated_audio` folder.
+
+## 📃 License
+This project is distributed under the GNU General Public License v3.0. See `LICENSE` for more information.
