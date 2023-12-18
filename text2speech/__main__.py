@@ -39,7 +39,18 @@ def get_app() -> gr.Interface:
         file_name = file_name.replace(",", "_")
         return file_name
 
-    def _generate_audio(prompt: str, voices_folder: str, file_name: str, language: str):
+    def _generate_audio(
+        prompt: str,
+        voices_folder: str,
+        file_name: str,
+        language: str,
+        length_penalty: float,
+        repetition_penalty: float,
+        top_k: int,
+        top_p: float,
+        speed: float,
+        enable_text_splitting: bool,
+    ) -> str:
         """Generate audio from text using the selected voices folder"""
 
         if file_name == "":
@@ -56,7 +67,16 @@ def get_app() -> gr.Interface:
         file_name = _get_fixed_file_name(file_name=file_name)
         language = LANGUAGE_MAPPING[language]
         text2speech.tts_to_file(
-            prompt, speaker_wav=speaker_wav, language=language, file_path=file_path
+            prompt,
+            speaker_wav=speaker_wav,
+            language=language,
+            file_path=file_path,
+            length_penalty=float(length_penalty),
+            repetition_penalty=float(repetition_penalty),
+            top_k=top_k,
+            top_p=top_p,
+            speed=speed,
+            enable_text_splitting=enable_text_splitting,
         )
         return file_path
 
@@ -94,6 +114,52 @@ def get_app() -> gr.Interface:
                 value="English", choices=LANGUAGE_MAPPING.keys(), label="Select Language"
             )
 
+            # Advanced options
+            with gr.Accordion("Advanced Options", open=False):
+                gr.Markdown(
+                    "These options are for advanced users. "
+                    "You can leave them as default if you are not sure what they do."
+                )
+                length_penalty = gr.Slider(
+                    value=1.0,
+                    label="Length Penalty (default: 1.0, higher value means shorter audio)",
+                    minimum=0.0,
+                    maximum=10.0,
+                    step=0.1,
+                )
+                repetition_penalty = gr.Slider(
+                    value=2.0,
+                    label="Repetition Penalty (default: 2.0, can be used to reduce the incidence of long silences or “uhhhhhhs”, etc)",
+                    minimum=0.0,
+                    maximum=10.0,
+                    step=0.1,
+                )
+                top_k = gr.Slider(
+                    value=50,
+                    label="Top K (default: 50, lower values mean the decoder produces more “likely” (aka boring) outputs)",
+                    minimum=0,
+                    maximum=100,
+                    step=1,
+                )
+                top_p = gr.Slider(
+                    value=0.8,
+                    label="Top P (default: 0.8, lower values mean the decoder produces more “likely” (aka boring) outputs)",
+                    minimum=0.0,
+                    maximum=1.0,
+                    step=0.01,
+                )
+                speed = gr.Slider(
+                    value=1.0,
+                    label="Speed (default: 1.0, higher values mean faster audio)",
+                    minimum=0.0,
+                    maximum=10.0,
+                    step=0.1,
+                )
+                enable_text_splitting = gr.Checkbox(
+                    value=True,
+                    label="Enable Text Splitting (default: true, whether to split the text into sentences and generate audio for each sentence. It allows you to have infinite input length but might loose important context between sentences)",
+                )
+
         # Select a folder with voices
         with gr.Row():
             voices_folder = gr.Dropdown(
@@ -115,7 +181,18 @@ def get_app() -> gr.Interface:
 
         button.click(
             fn=_generate_audio,
-            inputs=[prompt, voices_folder, file_name, language],
+            inputs=[
+                prompt,
+                voices_folder,
+                file_name,
+                language,
+                length_penalty,
+                repetition_penalty,
+                top_k,
+                top_p,
+                speed,
+                enable_text_splitting,
+            ],
             outputs=[generated_audio_preview],
         )
 
